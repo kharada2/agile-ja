@@ -38,6 +38,7 @@ void my_assert(const bool expr, const std::string& msg) {
     std::cout << "Passed " << std::endl;
   } else {
     throw std::runtime_error(msg);
+    // throw std::string(msg);
   }
   return;
 }
@@ -47,13 +48,13 @@ void my_assert(const bool expr, const std::string& msg) {
 void test_contains() {
   try {
     my_assert(contains("Nick", names) == true, "output of function 'contains' was not expected");
-  } catch (std::exception& e) {
+  } catch (std::runtime_error& e) {
     std::cerr << "Failed: " << e.what() << std::endl;
   }
 
   try {
     my_assert(contains("Mat", names) == false, "output of function 'contains' was not expected");
-  } catch (std::exception& e) {
+  } catch (std::runtime_error& e) {
     std::cerr << "Failed: " << e.what() << std::endl;
   }
 }
@@ -63,7 +64,7 @@ void test_contains() {
 void test_get_name() {
   try {
     my_assert(get_name("Nick", names) == "Nick", "output of function 'get_name' was not expected");
-  } catch (std::exception& e) {
+  } catch (std::runtime_error& e) {
     std::cerr << "Failed: " << e.what() << std::endl;
   }
 }
@@ -74,7 +75,7 @@ void test_add_name() {
   try {
     add_name("Mat", names);
     my_assert(names.back() == "Mat", "Failed to add to the list");
-  } catch (std::exception& e) {
+  } catch (std::runtime_error& e) {
     std::cerr << "Failed: " << e.what() << std::endl;
   }
 }
@@ -84,7 +85,7 @@ void test_add_name() {
 void test_add_two() {
   try {
     my_assert(add_two(2) == 4, "sum was not calculated correctly");
-  } catch (std::exception& e) {
+  } catch (std::runtime_error& e) {
     std::cerr << "Failed: " << e.what() << std::endl;
   }
 }
@@ -94,7 +95,7 @@ void test_add_two() {
 void test_divide_by_two() {
   try {
     my_assert(divide_by_two(2) == 1, "division was not calculated correctly");
-  } catch (std::exception& e) {
+  } catch (std::runtime_error& e) {
     std::cerr << "Failed: " << e.what() << std::endl;
   }
 }
@@ -105,8 +106,11 @@ void test_greeting() {
   try {
     my_assert(greeting("Kota", 2.0) == "Hello, Kota. It is 2.000000 degrees warmer today than yesterday",
               "output of function 'greeting' was not expected");
-  } catch (std::exception& e) {
-    std::cerr << "Failed: " << e.what() << std::endl;
+    // } catch (std::runtime_error& e) {
+    //   std::cerr << "Failed: " << e.what() << std::endl;
+    // }
+  } catch (const char* msg) {
+    std::cerr << "Failed: " << msg << std::endl;
   }
 }
 
@@ -118,7 +122,7 @@ void test_greeting() {
 void test_my_assert_false() {
   try {
     my_assert(false, "test error message");
-  } catch (std::exception& e) {
+  } catch (std::runtime_error& e) {
     my_assert(std::string(e.what()) == "test error message", "should return a proper message");
   }
 }
@@ -129,7 +133,7 @@ void test_my_assert_false() {
 void test_my_assert_true() {
   try {
     my_assert(true, "test true case");
-  } catch (std::exception& e) {
+  } catch (std::runtime_error& e) {
     my_assert(std::string(e.what()) == "test true case", "should return a proper message");
   }
 }
@@ -150,7 +154,7 @@ void test_complex_greeting() {
     my_assert(greeting(get_name(input_member, {"Oatmeal", "Prancer", "Rudolph", "Andy"}), divide_by_two(add_two(2))) ==
                   expect,
               input_member + "is not a given member list");
-  } catch (std::exception& e) {
+  } catch (std::runtime_error& e) {
     std::cerr << "Failed: " << e.what() << std::endl;
   }
 }
